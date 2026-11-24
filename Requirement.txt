@@ -1,0 +1,3821 @@
+# MASTER PROMPT FOR CLAUDE CODE
+
+# AI-POWERED LINKEDIN ENGAGEMENT & NETWORKING AGENT
+
+You are a senior software architect, Python developer, React developer, AI-agent engineer, database architect, and automation engineer.
+
+I want you to build a complete, production-oriented **AI-powered LinkedIn Engagement & Networking Agent**.
+
+This is NOT just a browser automation script.
+
+It must be a complete application consisting of:
+
+1. React web UI
+2. Python FastAPI backend
+3. AI/Agent layer using Claude
+4. PostgreSQL database
+5. Persistent workflow/state engine
+6. Background task processing
+7. Scheduler
+8. Candidate/post evaluation
+9. Engagement workflow
+10. Comment generation
+11. Connection scheduling
+12. Approval system
+13. Audit logs
+14. Dashboard
+15. Dry-run mode
+16. Mock external-platform adapter
+17. Production-ready architecture
+
+---
+
+# 1. CONFIRMED TECHNOLOGY STACK
+
+Use the following stack.
+
+## Frontend
+
+```text
+React.js
+TypeScript
+Vite
+Tailwind CSS
+React Router
+TanStack Query / React Query
+```
+
+## Backend
+
+```text
+Python 3.12+
+FastAPI
+Pydantic
+SQLAlchemy
+Alembic
+```
+
+## Database
+
+```text
+PostgreSQL
+```
+
+## AI
+
+```text
+Claude API
+```
+
+Create a provider abstraction so another LLM can be added later.
+
+## Background Processing
+
+```text
+Celery
+Redis
+```
+
+Use Celery for:
+
+* Candidate discovery
+* Post processing
+* AI evaluation
+* Engagement workflows
+* Delayed connection jobs
+* Future activity monitoring
+
+## Testing
+
+Backend:
+
+```text
+Pytest
+```
+
+Frontend:
+
+```text
+React Testing Library
+Vitest
+```
+
+## Infrastructure
+
+```text
+Docker
+Docker Compose
+```
+
+---
+
+# 2. IMPORTANT FIRST STEP
+
+Before writing code:
+
+INSPECT THE EXISTING REPOSITORY.
+
+Do not immediately generate files.
+
+Determine:
+
+* Existing frontend
+* Existing backend
+* Existing database
+* Existing Docker configuration
+* Existing package manager
+* Existing Python environment
+* Existing React architecture
+* Existing authentication
+* Existing environment configuration
+* Existing reusable components
+* Existing APIs
+* Existing tests
+
+If the repository is empty, create the architecture described below.
+
+If an existing stack exists, do not unnecessarily replace it.
+
+After inspection, provide:
+
+```text
+1. Repository assessment
+2. Existing technology stack
+3. What can be reused
+4. What needs to be added
+5. Proposed architecture
+6. Directory structure
+7. Database schema
+8. API structure
+9. UI structure
+10. Agent workflow
+11. Implementation milestones
+```
+
+Then start implementation.
+
+---
+
+# 3. PRODUCT OBJECTIVE
+
+The user should be able to open the React application and tell the AI agent what type of people and posts to search for.
+
+Example user instruction:
+
+> Find CTOs, VPs of Engineering, Engineering Managers and senior Java developers working in SaaS/software companies in India. Focus on people who actively post about Java, Spring Boot, AI, Generative AI, microservices, software architecture and engineering leadership. Ignore recruitment posts, job advertisements, generic motivational posts, spam and purely promotional content. Process up to 20 people per day.
+
+The AI should understand this natural-language instruction and convert it into structured campaign criteria.
+
+The user should be able to review and modify those criteria before starting the campaign.
+
+---
+
+# 4. COMPLETE AGENT WORKFLOW
+
+The default workflow should be:
+
+```text
+USER CREATES CAMPAIGN
+        ↓
+NATURAL LANGUAGE INSTRUCTION
+        ↓
+CLAUDE PARSES REQUIREMENTS
+        ↓
+USER REVIEWS CRITERIA
+        ↓
+CAMPAIGN STARTED
+        ↓
+DISCOVER PEOPLE
+        ↓
+EVALUATE PEOPLE
+        ↓
+SELECT RELEVANT PEOPLE
+        ↓
+FIND ELIGIBLE POSTS
+        ↓
+POST #1
+        ↓
+LIKE
+        ↓
+POST #2
+        ↓
+LIKE
+        ↓
+POST #3
+        ↓
+AI CONTENT EVALUATION
+        ↓
+IS CONTENT RELEVANT?
+       / \
+     NO   YES
+     |      |
+     |      ↓
+     |    LIKE
+     |      ↓
+     |    GENERATE COMMENT
+     |      ↓
+     |    APPROVAL?
+     |      ↓
+     |    POST COMMENT
+     |      |
+     └──────┘
+            ↓
+      SCHEDULE CONNECTION
+            ↓
+       WAIT ~48 HOURS
+            ↓
+       REVALIDATE PERSON
+            ↓
+       CHECK RECENT ACTIVITY
+            ↓
+       CHECK CONNECTION STATUS
+            ↓
+       CHECK CAMPAIGN RULES
+            ↓
+       STILL ELIGIBLE?
+          /       \
+        NO         YES
+        |           |
+      SKIP          ↓
+              GENERATE CONNECTION
+                  MESSAGE
+                     ↓
+                 APPROVAL?
+                     ↓
+             SEND CONNECTION
+                     ↓
+                COMPLETED
+```
+
+---
+
+# 5. IMPORTANT WORKFLOW INTERPRETATION
+
+The default engagement sequence is:
+
+```text
+Eligible Post #1
+      ↓
+LIKE
+
+Eligible Post #2
+      ↓
+LIKE
+
+Eligible Post #3
+      ↓
+AI evaluates content
+
+If relevant:
+      ↓
+LIKE
+      ↓
+Generate meaningful comment
+      ↓
+Approve/Post
+```
+
+The system must use **eligible posts**, not simply count arbitrary elements on a LinkedIn page.
+
+Do not treat the following as posts unless explicitly configured:
+
+* Comments
+* Advertisements
+* Suggested content
+* Job advertisements
+* Notifications
+* UI elements
+* Unrelated content
+
+---
+
+# 6. ARCHITECTURE PRINCIPLE
+
+The system must have clear separation between:
+
+```text
+React UI
+      ↓
+FastAPI
+      ↓
+Agent Controller
+      ↓
+Workflow Engine
+      ↓
+AI / Scheduler / Platform Adapter
+```
+
+Claude should NOT directly control arbitrary external actions.
+
+Claude is the reasoning layer.
+
+The workflow engine controls deterministic execution.
+
+Example:
+
+```text
+Claude:
+Post relevance = 87
+
+Workflow Engine:
+87 >= configured threshold of 75
+
+Action Executor:
+LIKE_POST
+```
+
+This separation is mandatory.
+
+---
+
+# 7. FRONTEND
+
+Build a modern responsive React application.
+
+Use:
+
+```text
+React
+TypeScript
+Vite
+Tailwind CSS
+React Router
+TanStack Query
+Vitest
+React Testing Library
+```
+
+Main navigation:
+
+```text
+Dashboard
+Campaigns
+Candidates
+Posts
+Approvals
+Scheduled Actions
+Agent Activity
+Analytics
+Settings
+```
+
+---
+
+# 8. DASHBOARD
+
+Dashboard should display:
+
+```text
+Active Campaigns
+Candidates Discovered
+Candidates Matched
+Candidates Processed
+Posts Analyzed
+Posts Liked
+Comments Generated
+Comments Posted
+Connections Scheduled
+Connections Sent
+Failed Actions
+Actions Today
+```
+
+Example:
+
+```text
+------------------------------------------------
+AI LinkedIn Engagement Agent
+------------------------------------------------
+
+Active Campaigns              3
+
+Candidates Found             127
+Candidates Matched            43
+Candidates Processed          31
+
+Posts Analyzed               112
+Posts Liked                   62
+Comments Generated            24
+Comments Posted               18
+
+Connections Scheduled         19
+Connections Sent               11
+
+Actions Today                 19
+------------------------------------------------
+```
+
+Show current agent status:
+
+```text
+RUNNING
+
+Campaign:
+Java + AI CTO Outreach
+
+Current Candidate:
+John Smith
+
+Current Step:
+Analyzing Post #3
+```
+
+---
+
+# 9. CAMPAIGN BUILDER
+
+Create:
+
+```text
++ Create Campaign
+```
+
+Campaign creation should start with a natural-language input.
+
+Example:
+
+```text
+Tell the agent what kind of people and posts you are looking for.
+
+[ Find CTOs, Engineering Managers and senior Java developers
+  in SaaS companies in India who post about Java, AI,
+  Spring Boot and software architecture. ]
+```
+
+Button:
+
+```text
+Analyze Requirements
+```
+
+---
+
+# 10. AI CAMPAIGN PARSER
+
+Claude receives the natural-language instruction and produces structured JSON.
+
+Example:
+
+```json
+{
+  "targetPeople": {
+    "jobTitles": [
+      "CTO",
+      "Engineering Manager",
+      "Senior Java Developer"
+    ],
+    "industries": [
+      "SaaS",
+      "Software"
+    ],
+    "locations": [
+      "India"
+    ],
+    "keywords": [
+      "Java",
+      "AI",
+      "Spring Boot"
+    ]
+  },
+  "postCriteria": {
+    "includeTopics": [
+      "Java",
+      "AI",
+      "Microservices",
+      "Architecture"
+    ],
+    "excludeTopics": [
+      "Recruitment",
+      "Jobs",
+      "Spam",
+      "Generic Motivation"
+    ],
+    "minimumRelevanceScore": 75
+  }
+}
+```
+
+Validate this response using Pydantic.
+
+---
+
+# 11. CAMPAIGN REVIEW
+
+After Claude parses the instruction, show:
+
+```text
+TARGET PEOPLE
+
+Job Titles
+☑ CTO
+☑ Engineering Manager
+☑ Senior Java Developer
+
+Industries
+☑ SaaS
+☑ Software
+
+Locations
+☑ India
+
+Topics
+☑ Java
+☑ AI
+☑ Spring Boot
+☑ Microservices
+☑ Architecture
+```
+
+Allow editing.
+
+The AI must not silently modify the criteria.
+
+Buttons:
+
+```text
+Save Draft
+Start Campaign
+Cancel
+```
+
+---
+
+# 12. POST CRITERIA
+
+Allow configuration of:
+
+```text
+Include Topics
+Exclude Topics
+Keywords
+Excluded Keywords
+Minimum Relevance Score
+Minimum Post Age
+Maximum Post Age
+Post Types
+```
+
+Example:
+
+```text
+Include:
+Java
+Spring Boot
+AI
+Generative AI
+Microservices
+Architecture
+
+Exclude:
+Recruitment
+Job Advertisement
+Generic Motivation
+Spam
+Pure Advertising
+```
+
+---
+
+# 13. ENGAGEMENT SETTINGS
+
+Campaign UI should allow:
+
+```text
+Initial posts to like:
+[2]
+
+Third post:
+☑ AI Evaluation
+☑ Like if relevant
+☑ Generate comment
+```
+
+Allow these to be configurable.
+
+Default:
+
+```text
+Initial likes = 2
+Third post = AI evaluation
+```
+
+---
+
+# 14. COMMENT SETTINGS
+
+Allow:
+
+```text
+Generate Comment:
+ON/OFF
+
+Comment Approval:
+Required / Automatic
+
+Comment Length:
+Short / Medium / Long
+
+Comment Style:
+Professional
+Technical
+Conversational
+```
+
+Default:
+
+```text
+Short
+Professional
+Approval Required
+```
+
+---
+
+# 15. COMMENT GENERATION
+
+Claude should analyze:
+
+```text
+Post content
+Author information
+Campaign topics
+Relevant concepts
+```
+
+Then generate a specific comment.
+
+Avoid:
+
+```text
+Great post!
+Amazing!
+Very insightful!
+Nice sharing!
+```
+
+The comment must:
+
+* Reference the actual post
+* Be concise
+* Be professional
+* Be natural
+* Avoid fake personal experience
+* Avoid fabricated facts
+* Avoid excessive praise
+* Avoid copying the original post
+
+---
+
+# 16. COMMENT APPROVAL UI
+
+Show:
+
+```text
+POST
+
+[Actual post]
+
+AI Evaluation
+Relevance: 91/100
+
+Topics:
+Java
+Microservices
+Architecture
+
+Suggested Comment:
+
+[Generated comment]
+
+[Edit]
+[Regenerate]
+[Approve]
+[Reject]
+```
+
+If approval is required, the workflow must pause until approval.
+
+---
+
+# 17. CONNECTION SETTINGS
+
+Campaign should allow:
+
+```text
+Connection Delay:
+[48] hours
+
+Revalidate Before Connection:
+YES
+
+Generate Personalized Message:
+YES
+
+Connection Approval:
+Required
+```
+
+---
+
+# 18. CONNECTION REVALIDATION
+
+When the delayed job becomes due:
+
+DO NOT blindly send the connection.
+
+Perform:
+
+```text
+Get profile
+        ↓
+Check current connection status
+        ↓
+Check whether request already exists
+        ↓
+Check campaign status
+        ↓
+Check exclusions
+        ↓
+Check recent activity
+        ↓
+Check daily limits
+        ↓
+Re-evaluate eligibility
+```
+
+If no longer eligible:
+
+```text
+SKIP
+```
+
+Otherwise:
+
+```text
+Generate connection message
+```
+
+---
+
+# 19. CONNECTION MESSAGE GENERATION
+
+Claude should generate a short personalized message based on:
+
+```text
+Person
+Job title
+Company
+Recent relevant post
+Campaign topic
+```
+
+Example:
+
+```text
+Hi John, I enjoyed your recent post about event-driven
+architecture. I work around software engineering and AI
+initiatives and would be glad to connect.
+```
+
+UI:
+
+```text
+[Edit]
+[Regenerate]
+[Approve]
+[Reject]
+```
+
+Also support:
+
+```text
+No Message
+Template
+AI Generated
+```
+
+---
+
+# 20. CANDIDATE DISCOVERY
+
+Create a candidate discovery service.
+
+It should accept:
+
+```python
+SearchCriteria
+```
+
+and return:
+
+```python
+list[Person]
+```
+
+Candidate information:
+
+```text
+Name
+Profile URL
+Headline
+Company
+Job Title
+Location
+Matched Criteria
+Discovery Reason
+```
+
+---
+
+# 21. CANDIDATE EVALUATION
+
+Claude evaluates whether a discovered person matches the campaign.
+
+Return:
+
+```json
+{
+  "match": true,
+  "score": 91,
+  "matchedCriteria": [
+    "CTO",
+    "SaaS",
+    "India",
+    "AI"
+  ],
+  "reason": "..."
+}
+```
+
+Store this evaluation.
+
+---
+
+# 22. POST DISCOVERY
+
+For every accepted candidate:
+
+```text
+Get posts
+      ↓
+Filter eligible posts
+      ↓
+Sort/identify posts
+      ↓
+Process first three eligible posts
+```
+
+Store post metadata.
+
+---
+
+# 23. AI POST EVALUATION
+
+Create:
+
+```text
+PostEvaluator
+```
+
+Input:
+
+```text
+Post
+Campaign Criteria
+Candidate
+```
+
+Output:
+
+```json
+{
+  "eligible": true,
+  "relevanceScore": 91,
+  "topics": [
+    "Java",
+    "Microservices"
+  ],
+  "reason": "...",
+  "riskFlags": []
+}
+```
+
+Use strict schema validation.
+
+---
+
+# 24. PYTHON BACKEND STRUCTURE
+
+Use:
+
+```text
+backend/
+│
+├── app/
+│   ├── main.py
+│   │
+│   ├── api/
+│   │   ├── campaigns.py
+│   │   ├── candidates.py
+│   │   ├── posts.py
+│   │   ├── approvals.py
+│   │   ├── scheduled_actions.py
+│   │   ├── activity.py
+│   │   ├── dashboard.py
+│   │   └── settings.py
+│   │
+│   ├── agents/
+│   │   ├── agent_controller.py
+│   │   ├── workflow_engine.py
+│   │   ├── action_executor.py
+│   │   └── policies.py
+│   │
+│   ├── ai/
+│   │   ├── provider.py
+│   │   ├── claude_provider.py
+│   │   ├── campaign_parser.py
+│   │   ├── candidate_evaluator.py
+│   │   ├── post_evaluator.py
+│   │   ├── comment_generator.py
+│   │   └── connection_generator.py
+│   │
+│   ├── integrations/
+│   │   └── linkedin/
+│   │       ├── adapter.py
+│   │       ├── auth.py
+│   │       └── capabilities.py
+│   │
+│   ├── workflows/
+│   │   ├── discovery.py
+│   │   ├── candidate.py
+│   │   ├── engagement.py
+│   │   ├── comment.py
+│   │   ├── connection.py
+│   │   └── revalidation.py
+│   │
+│   ├── scheduler/
+│   │   ├── celery_app.py
+│   │   └── tasks.py
+│   │
+│   ├── database/
+│   │   ├── database.py
+│   │   ├── models/
+│   │   └── repositories/
+│   │
+│   ├── schemas/
+│   ├── services/
+│   ├── config/
+│   └── logging/
+│
+├── tests/
+├── alembic/
+├── requirements.txt
+├── Dockerfile
+└── .env.example
+```
+
+Adapt this to the actual repository.
+
+---
+
+# 25. REACT STRUCTURE
+
+Use:
+
+```text
+frontend/
+│
+├── src/
+│   ├── pages/
+│   │   ├── Dashboard/
+│   │   ├── Campaigns/
+│   │   ├── CreateCampaign/
+│   │   ├── CampaignDetail/
+│   │   ├── Candidates/
+│   │   ├── CandidateDetail/
+│   │   ├── Posts/
+│   │   ├── Approvals/
+│   │   ├── ScheduledActions/
+│   │   ├── Activity/
+│   │   ├── Analytics/
+│   │   └── Settings/
+│   │
+│   ├── components/
+│   ├── layouts/
+│   ├── hooks/
+│   ├── services/
+│   ├── types/
+│   └── utils/
+│
+├── App.tsx
+└── main.tsx
+```
+
+---
+
+# 26. DATABASE
+
+Use PostgreSQL + SQLAlchemy + Alembic.
+
+Tables:
+
+```text
+users
+
+campaigns
+campaign_criteria
+campaign_exclusions
+
+people
+person_campaigns
+
+posts
+post_evaluations
+
+candidate_evaluations
+
+workflows
+workflow_steps
+
+actions
+
+comments
+comment_approvals
+
+scheduled_tasks
+
+agent_runs
+agent_logs
+
+daily_usage
+
+settings
+```
+
+---
+
+# 27. WORKFLOW STATES
+
+Use explicit persisted states:
+
+```text
+DISCOVERING
+
+CANDIDATE_FOUND
+EVALUATING_CANDIDATE
+CANDIDATE_ACCEPTED
+CANDIDATE_REJECTED
+
+FINDING_POSTS
+
+POST_1_FOUND
+POST_1_LIKED
+
+POST_2_FOUND
+POST_2_LIKED
+
+POST_3_FOUND
+POST_3_EVALUATING
+POST_3_ACCEPTED
+POST_3_REJECTED
+
+POST_3_LIKED
+
+COMMENT_GENERATED
+COMMENT_PENDING_APPROVAL
+COMMENT_POSTED
+COMMENT_REJECTED
+
+CONNECTION_SCHEDULED
+WAITING_FOR_CONNECTION
+
+REVALIDATING
+
+CONNECTION_PENDING_APPROVAL
+CONNECTION_READY
+CONNECTION_SENT
+
+COMPLETED
+SKIPPED
+CANCELLED
+FAILED
+```
+
+---
+
+# 28. WORKFLOW RESUMABILITY
+
+The system must survive crashes/restarts.
+
+Example:
+
+```text
+Post #1 liked
+Post #2 liked
+SERVER CRASH
+```
+
+After restart:
+
+```text
+Load workflow
+State = POST_2_LIKED
+
+Do NOT repeat Post #1
+Do NOT repeat Post #2
+
+Continue with Post #3
+```
+
+This is mandatory.
+
+---
+
+# 29. IDEMPOTENCY
+
+Before every external action:
+
+```text
+Check action history
+Check current state
+Check whether action already succeeded
+```
+
+Create action table:
+
+```text
+actions
+
+id
+campaign_id
+person_id
+post_id
+action_type
+status
+attempt_count
+executed_at
+error_message
+created_at
+updated_at
+```
+
+Possible action types:
+
+```text
+LIKE_POST
+COMMENT_POST
+SEND_CONNECTION
+```
+
+Statuses:
+
+```text
+PENDING
+RUNNING
+SUCCESS
+FAILED
+CANCELLED
+```
+
+---
+
+# 30. CELERY + REDIS
+
+Use Celery for background processing.
+
+Tasks:
+
+```text
+discover_candidates
+evaluate_candidate
+discover_posts
+evaluate_post
+like_post
+generate_comment
+post_comment
+schedule_connection
+revalidate_candidate
+generate_connection_message
+send_connection
+monitor_candidate
+```
+
+Use persistent scheduling.
+
+Do NOT use only Python `sleep()` or `asyncio.sleep()` for multi-day workflows.
+
+---
+
+# 31. 48-HOUR CONNECTION JOB
+
+When engagement is complete:
+
+```text
+Create scheduled task
+scheduled_at = now + configured delay
+```
+
+Example:
+
+```text
+Sep 30 12:00
+      ↓
+Oct 2 12:00
+```
+
+At execution time:
+
+```text
+Revalidate
+      ↓
+Check limits
+      ↓
+Check campaign status
+      ↓
+Check connection status
+      ↓
+Evaluate eligibility
+      ↓
+Send connection if eligible
+```
+
+---
+
+# 32. RATE LIMITING
+
+Campaign settings:
+
+```text
+Maximum people/day
+Maximum likes/day
+Maximum comments/day
+Maximum connections/day
+Maximum people/run
+Minimum delay
+Maximum delay
+```
+
+Store usage in:
+
+```text
+daily_usage
+```
+
+If a limit is reached:
+
+```text
+Do not execute additional action.
+```
+
+---
+
+# 33. DRY-RUN MODE
+
+Mandatory.
+
+Environment:
+
+```env
+DRY_RUN=true
+```
+
+Dry run should execute:
+
+```text
+Candidate discovery
+Candidate evaluation
+Post discovery
+AI evaluation
+Comment generation
+Scheduling simulation
+Revalidation simulation
+```
+
+But NOT real external actions.
+
+Example UI:
+
+```text
+DRY RUN
+
+Would Like:
+Post #1
+
+Would Like:
+Post #2
+
+AI:
+Post #3 relevance = 91
+
+Would Like:
+Post #3
+
+Would Comment:
+"Interesting perspective on..."
+
+Would Schedule:
+Connection in 48 hours
+```
+
+---
+
+# 34. MOCK PLATFORM ADAPTER
+
+Before live integration, implement:
+
+```python
+MockSocialPlatformAdapter
+```
+
+with fake:
+
+```text
+People
+Profiles
+Posts
+Likes
+Comments
+Connections
+```
+
+The complete workflow must be testable using this adapter.
+
+---
+
+# 35. PLATFORM ADAPTER
+
+Create:
+
+```python
+class SocialPlatformAdapter:
+    async def search_people(...):
+        pass
+
+    async def get_profile(...):
+        pass
+
+    async def get_posts(...):
+        pass
+
+    async def like_post(...):
+        pass
+
+    async def comment_on_post(...):
+        pass
+
+    async def send_connection(...):
+        pass
+```
+
+Implement a separate LinkedIn adapter behind this interface.
+
+Do not spread platform-specific implementation through the application.
+
+---
+
+# 36. LINKEDIN INTEGRATION
+
+Before implementing live actions:
+
+Investigate the currently available LinkedIn API/integration capabilities and applicable platform rules.
+
+Separate capabilities:
+
+```text
+SEARCH
+PROFILE_READ
+POST_READ
+LIKE
+COMMENT
+CONNECTION
+```
+
+Represent each capability as:
+
+```text
+SUPPORTED
+UNSUPPORTED
+MANUAL_REQUIRED
+```
+
+If an action is not supported by an appropriate integration, do not implement a workaround designed to bypass platform restrictions.
+
+The rest of the application must continue working through the adapter.
+
+---
+
+# 37. AUTHENTICATION
+
+Never store LinkedIn credentials in source code.
+
+Create secure authentication/session management.
+
+Never log:
+
+```text
+Password
+Cookies
+Access Tokens
+API Keys
+Session Tokens
+```
+
+Use environment variables/secrets management.
+
+---
+
+# 38. CLAUDE PROVIDER
+
+Create:
+
+```python
+class LLMProvider:
+    async def parse_campaign_instruction(...):
+        pass
+
+    async def evaluate_candidate(...):
+        pass
+
+    async def evaluate_post(...):
+        pass
+
+    async def generate_comment(...):
+        pass
+
+    async def generate_connection_message(...):
+        pass
+```
+
+Implement:
+
+```text
+ClaudeProvider
+```
+
+Configuration:
+
+```env
+LLM_PROVIDER=claude
+CLAUDE_API_KEY=
+CLAUDE_MODEL=
+```
+
+Never expose the Claude API key to React.
+
+---
+
+# 39. PYDANTIC SCHEMAS
+
+Create schemas:
+
+```text
+CampaignCriteria
+CandidateEvaluation
+PostEvaluation
+GeneratedComment
+GeneratedConnectionMessage
+ActionResult
+WorkflowState
+ScheduledTask
+```
+
+All AI output must pass validation.
+
+---
+
+# 40. API ENDPOINTS
+
+Implement appropriate REST endpoints.
+
+At minimum:
+
+```text
+POST   /api/campaigns
+GET    /api/campaigns
+GET    /api/campaigns/{id}
+PUT    /api/campaigns/{id}
+DELETE /api/campaigns/{id}
+
+POST   /api/campaigns/{id}/analyze
+POST   /api/campaigns/{id}/start
+POST   /api/campaigns/{id}/pause
+POST   /api/campaigns/{id}/resume
+POST   /api/campaigns/{id}/stop
+
+GET    /api/campaigns/{id}/candidates
+GET    /api/candidates/{id}
+GET    /api/candidates/{id}/posts
+
+GET    /api/approvals
+POST   /api/approvals/{id}/approve
+POST   /api/approvals/{id}/reject
+
+GET    /api/scheduled-actions
+POST   /api/scheduled-actions/{id}/cancel
+POST   /api/scheduled-actions/{id}/reschedule
+
+GET    /api/activity
+GET    /api/dashboard
+```
+
+Adapt endpoint structure to existing backend conventions.
+
+---
+
+# 41. REAL-TIME ACTIVITY
+
+Use WebSocket or Server-Sent Events.
+
+The UI should receive events such as:
+
+```text
+candidate_discovered
+candidate_evaluated
+post_found
+post_evaluated
+action_started
+action_completed
+comment_generated
+approval_required
+connection_scheduled
+connection_ready
+workflow_completed
+workflow_failed
+```
+
+---
+
+# 42. APPROVAL CENTER
+
+Create tabs:
+
+```text
+Candidates
+Comments
+Connections
+```
+
+Each approval should display:
+
+* Candidate
+* Campaign
+* Relevant post
+* AI reasoning
+* Proposed action
+* Generated content
+* Approve
+* Reject
+* Edit
+* Regenerate
+
+---
+
+# 43. CANDIDATE PAGE
+
+Display:
+
+```text
+Name
+Headline
+Company
+Job title
+Profile
+Campaign
+Match score
+Why selected
+Current workflow state
+Next action
+```
+
+Post history:
+
+```text
+Post 1 → LIKED
+Post 2 → LIKED
+Post 3 → EVALUATED → LIKED → COMMENTED
+```
+
+---
+
+# 44. CANDIDATE TIMELINE
+
+Example:
+
+```text
+Candidate discovered
+       ↓
+Candidate matched
+       ↓
+Post #1 discovered
+       ↓
+Post #1 liked
+       ↓
+Post #2 liked
+       ↓
+Post #3 evaluated
+       ↓
+Post #3 liked
+       ↓
+Comment generated
+       ↓
+Comment approved
+       ↓
+Comment posted
+       ↓
+Connection scheduled
+       ↓
+Revalidation
+       ↓
+Connection sent
+       ↓
+Completed
+```
+
+---
+
+# 45. ANALYTICS
+
+Campaign analytics:
+
+```text
+Candidates discovered
+Candidates accepted
+Candidates rejected
+
+Posts analyzed
+Posts accepted
+Posts rejected
+
+Likes
+Comments
+Connections
+
+Failures
+Average processing time
+```
+
+Show charts where useful.
+
+Do not infer outcomes that the system cannot actually measure.
+
+---
+
+# 46. ERROR HANDLING
+
+Use structured errors:
+
+```text
+AUTHENTICATION_EXPIRED
+PROFILE_NOT_FOUND
+POST_NOT_FOUND
+SEARCH_FAILED
+LIKE_FAILED
+COMMENT_FAILED
+CONNECTION_FAILED
+AI_PROVIDER_ERROR
+AI_INVALID_RESPONSE
+RATE_LIMIT_REACHED
+SCHEDULER_ERROR
+SESSION_EXPIRED
+```
+
+Transient errors:
+
+```text
+Retry with exponential backoff
+```
+
+Repeated failures:
+
+```text
+Pause workflow
+Show error
+Require intervention
+```
+
+Do not endlessly retry.
+
+---
+
+# 47. SECURITY
+
+Implement:
+
+```text
+Environment variables
+Secret management
+Input validation
+Authentication
+Authorization
+Rate limiting
+Secure cookies if used
+CORS configuration
+CSRF protection where applicable
+```
+
+Never expose secrets to frontend.
+
+Never commit `.env`.
+
+Provide:
+
+```text
+.env.example
+```
+
+---
+
+# 48. DOCKER
+
+Create:
+
+```text
+docker-compose.yml
+```
+
+Services:
+
+```text
+frontend
+backend
+worker
+postgres
+redis
+```
+
+Example:
+
+```text
+React
+   ↓
+FastAPI
+   ↓
+PostgreSQL
+
+FastAPI
+   ↓
+Redis
+   ↓
+Celery Worker
+```
+
+---
+
+# 49. ENVIRONMENT VARIABLES
+
+Create:
+
+```env
+APP_ENV=development
+
+DATABASE_URL=
+
+REDIS_URL=
+
+CLAUDE_API_KEY=
+CLAUDE_MODEL=
+
+DRY_RUN=true
+
+CONNECTION_DELAY_HOURS=48
+
+MAX_PEOPLE_PER_DAY=
+MAX_LIKES_PER_DAY=
+MAX_COMMENTS_PER_DAY=
+MAX_CONNECTIONS_PER_DAY=
+
+MIN_ACTION_DELAY_SECONDS=
+MAX_ACTION_DELAY_SECONDS=
+```
+
+Never hard-code these values.
+
+---
+
+# 50. TESTING
+
+Backend tests:
+
+```text
+Campaign parsing
+Pydantic validation
+Candidate evaluation
+Post evaluation
+Workflow state transitions
+Idempotency
+Rate limiting
+Scheduler
+Revalidation
+AI response parsing
+```
+
+Frontend tests:
+
+```text
+Campaign creation
+Criteria editing
+Approval workflow
+Candidate display
+Dashboard
+Scheduled actions
+Pause/resume
+```
+
+Integration tests:
+
+```text
+PostgreSQL
+Redis
+Celery
+Mock Claude
+Mock platform adapter
+```
+
+End-to-end:
+
+```text
+Create campaign
+→ Parse criteria
+→ Discover mock candidate
+→ Find posts
+→ Like 1
+→ Like 2
+→ Evaluate 3
+→ Generate comment
+→ Approve
+→ Schedule
+→ Revalidate
+→ Generate connection
+→ Complete
+```
+
+---
+
+# 51. IMPLEMENTATION MILESTONES
+
+Follow this exact order.
+
+## Milestone 1
+
+Repository analysis and architecture.
+
+## Milestone 2
+
+Backend foundation:
+
+* FastAPI
+* PostgreSQL
+* SQLAlchemy
+* Alembic
+* Pydantic
+* Configuration
+* Logging
+
+## Milestone 3
+
+Frontend foundation:
+
+* React
+* TypeScript
+* Vite
+* Tailwind
+* Routing
+* Layout
+* API client
+
+## Milestone 4
+
+Campaign Builder:
+
+```text
+Natural Language
+        ↓
+Claude
+        ↓
+Structured Criteria
+        ↓
+Editable UI
+        ↓
+Save Campaign
+```
+
+## Milestone 5
+
+Dashboard.
+
+## Milestone 6
+
+Mock platform adapter.
+
+## Milestone 7
+
+Candidate discovery.
+
+## Milestone 8
+
+Post discovery.
+
+## Milestone 9
+
+Candidate + post AI evaluation.
+
+## Milestone 10
+
+Workflow engine.
+
+## Milestone 11
+
+Likes + comment generation.
+
+## Milestone 12
+
+Approval center.
+
+## Milestone 13
+
+Celery + Redis scheduler.
+
+## Milestone 14
+
+48-hour connection workflow.
+
+## Milestone 15
+
+Revalidation.
+
+## Milestone 16
+
+Connection message generation.
+
+## Milestone 17
+
+Live platform integration where supported.
+
+## Milestone 18
+
+Analytics.
+
+## Milestone 19
+
+Security hardening.
+
+## Milestone 20
+
+Automated testing.
+
+## Milestone 21
+
+Docker deployment.
+
+---
+
+# 52. DEVELOPMENT RULES
+
+Follow these rules strictly:
+
+1. Inspect before modifying.
+2. Do not destroy existing functionality.
+3. Do not replace existing technology unnecessarily.
+4. Keep AI logic separate from business logic.
+5. Keep external platform logic isolated.
+6. Persist workflow state.
+7. Make actions idempotent.
+8. Use Pydantic validation.
+9. Never trust raw Claude output.
+10. Never store secrets in code.
+11. Implement dry-run first.
+12. Implement mock platform first.
+13. Test before live integration.
+14. Make workflows resumable.
+15. Use persistent background jobs.
+16. Do not use long-running in-memory timers.
+17. Make campaigns pausable.
+18. Make scheduled actions cancellable.
+19. Keep audit logs.
+20. Keep the UI responsive and intuitive.
+
+---
+
+# 53. IMPORTANT AGENT DESIGN RULE
+
+Do NOT make the AI agent an uncontrolled loop.
+
+Avoid:
+
+```python
+while True:
+    ask_claude()
+    do_whatever_claude_says()
+```
+
+Instead:
+
+```text
+Campaign
+   ↓
+Workflow Engine
+   ↓
+Current State
+   ↓
+Determine Next Step
+   ↓
+Claude if reasoning is required
+   ↓
+Validate Result
+   ↓
+Policy Check
+   ↓
+Action
+   ↓
+Persist State
+   ↓
+Next State
+```
+
+Claude provides reasoning.
+
+The workflow engine provides control.
+
+---
+
+# 54. EXAMPLE COMPLETE USER EXPERIENCE
+
+I open the application.
+
+Click:
+
+```text
+Create Campaign
+```
+
+Enter:
+
+```text
+Find CTOs and Engineering Managers in SaaS companies
+in India who actively post about Java, AI, microservices
+and architecture.
+
+Ignore recruiters, job posts, generic motivational posts,
+spam and advertisements.
+
+Like their first two relevant posts.
+
+On the third relevant post, evaluate it with AI. If it is
+meaningful and relevant, like it and generate a short
+technical comment.
+
+After two days, re-check the person and their latest
+activity. If they are still eligible, send a personalized
+connection request.
+```
+
+Claude produces:
+
+```text
+Roles:
+CTO
+Engineering Manager
+
+Industry:
+SaaS
+
+Location:
+India
+
+Topics:
+Java
+AI
+Microservices
+Architecture
+
+Excluded:
+Recruitment
+Jobs
+Motivation
+Spam
+Advertisements
+
+Workflow:
+Like 2 posts
+Evaluate third
+Like third if eligible
+Generate comment
+Wait 48 hours
+Revalidate
+Connection
+```
+
+I review it.
+
+I click:
+
+```text
+START CAMPAIGN
+```
+
+The dashboard shows:
+
+```text
+Finding candidates...
+
+43 candidates discovered.
+
+12 candidates matched.
+
+Processing:
+John Smith
+```
+
+Then:
+
+```text
+Post #1
+Relevance: 84
+LIKE ✓
+
+Post #2
+Relevance: 89
+LIKE ✓
+
+Post #3
+Relevance: 93
+
+AI:
+Eligible
+
+LIKE ✓
+
+Comment:
+"Your point about reducing coupling through
+event-driven communication is particularly relevant
+when independently scaling services."
+
+[Approve]
+```
+
+After approval:
+
+```text
+Comment posted ✓
+
+Connection scheduled:
+Oct 2, 12:30 PM
+```
+
+After two days:
+
+```text
+Revalidating John Smith...
+
+Already connected: NO
+Campaign active: YES
+Recent relevant activity: YES
+Excluded: NO
+Daily limit: AVAILABLE
+
+Eligible ✓
+```
+
+Then:
+
+```text
+AI-generated connection message:
+
+"Hi John, I enjoyed your recent discussion about
+event-driven architecture. I work around software
+engineering and AI initiatives and would be glad
+to connect."
+
+[Approve]
+```
+
+After approval:
+
+```text
+Connection action completed.
+
+Workflow:
+COMPLETED
+```
+
+The entire history remains visible in the UI.
+
+---
+
+# 55. FINAL IMPLEMENTATION REQUIREMENT
+
+The final system must feel like a real product.
+
+It must NOT feel like:
+
+```text
+Python script + browser automation
+```
+
+It should feel like:
+
+```text
+AI Agent Platform
++
+Campaign Management
++
+Workflow Engine
++
+Human Approval
++
+Persistent Memory
++
+Scheduler
++
+Analytics
++
+External Platform Adapter
+```
+
+The UI, database, backend, agent, scheduler, AI, and platform adapter must work as one coherent system.
+
+---
+
+# 56. START NOW
+
+First inspect the repository.
+
+Do not generate the entire project immediately.
+
+Return:
+
+```text
+1. Repository analysis
+2. Existing stack
+3. Architecture recommendation
+4. Database ER/schema proposal
+5. API proposal
+6. React page/component structure
+7. Python package structure
+8. Agent workflow/state machine
+9. Claude integration design
+10. Celery/Redis design
+11. Platform adapter design
+12. Implementation milestones
+```
+
+Then start **Milestone 1**.
+
+After each milestone:
+
+```text
+- Implement
+- Run tests
+- Run build
+- Fix errors
+- Verify functionality
+- Summarize changes
+- Continue
+```
+
+Do not skip testing.
+
+Do not create fake production functionality.
+
+Use mocks only for external integrations during development.
+
+The end goal is a complete, maintainable, extensible AI-powered LinkedIn engagement and networking application.
+
+# 57. EXTERNALIZE ALL AI AGENT PROMPTS
+
+This is a mandatory architectural requirement.
+
+DO NOT write large/static Claude prompts directly inside Python source files.
+
+For example, DO NOT do this:
+
+```python
+prompt = """
+You are an AI agent...
+Analyze this candidate...
+Return JSON...
+"""
+```
+
+Do not embed agent instructions, evaluation criteria, comment-generation instructions, or connection-message prompts directly inside:
+
+```text
+*.py
+*.ts
+*.tsx
+*.js
+```
+
+Instead, maintain all prompts as separate files.
+
+---
+
+# 58. PROMPT DIRECTORY
+
+Create a dedicated prompt directory in the backend:
+
+```text
+backend/
+└── app/
+    └── ai/
+        ├── prompts/
+        │   ├── campaign_parser/
+        │   │   ├── system.md
+        │   │   └── user.md
+        │   │
+        │   ├── candidate_evaluator/
+        │   │   ├── system.md
+        │   │   └── user.md
+        │   │
+        │   ├── post_evaluator/
+        │   │   ├── system.md
+        │   │   └── user.md
+        │   │
+        │   ├── comment_generator/
+        │   │   ├── system.md
+        │   │   └── user.md
+        │   │
+        │   ├── connection_generator/
+        │   │   ├── system.md
+        │   │   └── user.md
+        │   │
+        │   └── common/
+        │       ├── output_rules.md
+        │       ├── safety_rules.md
+        │       └── formatting_rules.md
+        │
+        ├── prompt_manager.py
+        ├── provider.py
+        └── claude_provider.py
+```
+
+Adapt this structure if the existing repository has a better organization.
+
+---
+
+# 59. PROMPTS TO BE SEPARATED
+
+At minimum, create separate prompt files for:
+
+### Campaign Parser
+
+```text
+campaign_parser/system.md
+campaign_parser/user.md
+```
+
+Responsible for converting natural-language campaign instructions into structured criteria.
+
+---
+
+### Candidate Evaluator
+
+```text
+candidate_evaluator/system.md
+candidate_evaluator/user.md
+```
+
+Responsible for determining whether a discovered person matches the campaign.
+
+---
+
+### Post Evaluator
+
+```text
+post_evaluator/system.md
+post_evaluator/user.md
+```
+
+Responsible for analyzing whether a post is relevant to the campaign.
+
+---
+
+### Comment Generator
+
+```text
+comment_generator/system.md
+comment_generator/user.md
+```
+
+Responsible for generating a relevant, concise comment.
+
+---
+
+### Connection Message Generator
+
+```text
+connection_generator/system.md
+connection_generator/user.md
+```
+
+Responsible for generating a personalized connection message.
+
+---
+
+# 60. PROMPT MANAGER
+
+Create a dedicated:
+
+```text
+PromptManager
+```
+
+For example:
+
+```python
+class PromptManager:
+
+    def load_system_prompt(self, agent_name: str) -> str:
+        ...
+
+    def load_user_prompt(
+        self,
+        agent_name: str,
+        variables: dict
+    ) -> str:
+        ...
+```
+
+The rest of the application should never need to know where prompts are stored.
+
+Example:
+
+```python
+system_prompt = prompt_manager.load_system_prompt(
+    "post_evaluator"
+)
+
+user_prompt = prompt_manager.load_user_prompt(
+    "post_evaluator",
+    {
+        "post_content": post.content,
+        "candidate": candidate,
+        "campaign": campaign
+    }
+)
+```
+
+Then:
+
+```python
+response = await claude.generate(
+    system_prompt=system_prompt,
+    user_prompt=user_prompt
+)
+```
+
+---
+
+# 61. PROMPT VARIABLES
+
+Prompts should support safe variable substitution.
+
+For example:
+
+```markdown
+# Candidate Evaluation
+
+Evaluate the following candidate against the campaign criteria.
+
+## Candidate
+
+Name:
+{{candidate_name}}
+
+Headline:
+{{candidate_headline}}
+
+Company:
+{{company_name}}
+
+Job Title:
+{{job_title}}
+
+## Campaign
+
+{{campaign_criteria}}
+```
+
+The application should populate these variables at runtime.
+
+Do NOT construct large prompts using Python string concatenation.
+
+---
+
+# 62. PROMPT VERSIONING
+
+Prompts must be versioned.
+
+Use a structure such as:
+
+```text
+prompts/
+├── campaign_parser/
+│   └── v1/
+│       ├── system.md
+│       └── user.md
+│
+├── candidate_evaluator/
+│   └── v1/
+│       ├── system.md
+│       └── user.md
+│
+├── post_evaluator/
+│   └── v1/
+│       ├── system.md
+│       └── user.md
+│
+├── comment_generator/
+│   └── v1/
+│       ├── system.md
+│       └── user.md
+│
+└── connection_generator/
+    └── v1/
+        ├── system.md
+        └── user.md
+```
+
+When changing a prompt significantly:
+
+```text
+v1
+↓
+v2
+```
+
+Do not silently overwrite prompts used by existing workflows if reproducibility matters.
+
+---
+
+# 63. PROMPT CONFIGURATION
+
+Prompt versions should be configurable.
+
+For example:
+
+```env
+CAMPAIGN_PARSER_PROMPT_VERSION=v1
+CANDIDATE_EVALUATOR_PROMPT_VERSION=v1
+POST_EVALUATOR_PROMPT_VERSION=v1
+COMMENT_GENERATOR_PROMPT_VERSION=v1
+CONNECTION_GENERATOR_PROMPT_VERSION=v1
+```
+
+Alternatively, use application configuration/database settings if that better fits the existing architecture.
+
+---
+
+# 64. PROMPT REGISTRY
+
+Create a central registry so agents do not manually construct prompt paths.
+
+Example:
+
+```python
+PROMPT_REGISTRY = {
+    "campaign_parser": "campaign_parser/v1",
+    "candidate_evaluator": "candidate_evaluator/v1",
+    "post_evaluator": "post_evaluator/v1",
+    "comment_generator": "comment_generator/v1",
+    "connection_generator": "connection_generator/v1",
+}
+```
+
+The exact implementation is flexible.
+
+The important requirement is that prompt selection is centralized.
+
+---
+
+# 65. PROMPT AUDITABILITY
+
+When an AI decision is stored, also store:
+
+```text
+agent_name
+prompt_version
+model
+timestamp
+input_hash
+output
+```
+
+For example:
+
+```text
+post_evaluation
+
+agent:
+post_evaluator
+
+prompt_version:
+v1
+
+model:
+configured Claude model
+
+relevance_score:
+91
+
+decision:
+eligible
+
+timestamp:
+...
+```
+
+This makes it possible to understand which prompt version produced an AI decision.
+
+---
+
+# 66. DO NOT STORE SECRETS IN PROMPTS
+
+Prompt files must not contain:
+
+```text
+API keys
+Passwords
+Access tokens
+Session cookies
+Database credentials
+Private credentials
+```
+
+Runtime data should be injected as variables.
+
+---
+
+# 67. PROMPT TESTING
+
+Create tests for prompts.
+
+At minimum:
+
+```text
+tests/
+└── ai/
+    ├── test_prompt_manager.py
+    ├── test_campaign_parser.py
+    ├── test_candidate_evaluator.py
+    ├── test_post_evaluator.py
+    ├── test_comment_generator.py
+    └── test_connection_generator.py
+```
+
+Test:
+
+* Prompt files exist
+* Correct prompt version loads
+* Variables are substituted
+* Required variables are not missing
+* Invalid agent names are rejected
+* Prompt output is sent correctly to Claude
+* Claude response passes schema validation
+
+---
+
+# 68. PROMPT MANAGEMENT UI — FUTURE READY
+
+Design the backend so prompt management can later be exposed through an admin UI.
+
+Future functionality may include:
+
+```text
+Agent Prompts
+
+Campaign Parser
+Version: v1
+Status: Active
+
+Candidate Evaluator
+Version: v2
+Status: Active
+
+Post Evaluator
+Version: v1
+Status: Active
+
+Comment Generator
+Version: v3
+Status: Active
+
+Connection Generator
+Version: v1
+Status: Active
+```
+
+For now, file-based prompts are sufficient.
+
+Do not build the prompt-management UI unless it is useful for the current implementation.
+
+---
+
+# 69. AGENT-SPECIFIC PROMPT CONTRACT
+
+Every AI agent should have a clearly defined contract:
+
+```text
+Agent
+↓
+Prompt
+↓
+Input Schema
+↓
+Claude
+↓
+Output Schema
+↓
+Validation
+↓
+Workflow Engine
+```
+
+Example:
+
+```text
+PostEvaluator
+     ↓
+post_evaluator/v1/system.md
+     +
+post_evaluator/v1/user.md
+     ↓
+Claude
+     ↓
+PostEvaluationSchema
+     ↓
+Pydantic validation
+     ↓
+Workflow Engine
+```
+
+Never allow raw LLM output to directly execute an external action.
+
+---
+
+# 70. PROMPT CONTENT SHOULD ALSO BE MODULAR
+
+Avoid creating one giant prompt containing every instruction in the system.
+
+Use reusable components where appropriate:
+
+```text
+common/
+├── output_rules.md
+├── safety_rules.md
+├── relevance_rules.md
+└── writing_rules.md
+```
+
+An agent can compose:
+
+```text
+Agent-specific system prompt
++
+Common rules
++
+Runtime campaign context
+```
+
+The PromptManager should handle this composition.
+
+---
+
+# 71. PROMPT CHANGES MUST NOT REQUIRE CODE CHANGES
+
+A key requirement:
+
+If I want to change:
+
+```text
+Comment style
+Post relevance instructions
+Candidate evaluation rules
+Connection message style
+```
+
+I should be able to modify the appropriate `.md` prompt file without changing Python code.
+
+Example:
+
+```text
+Change:
+backend/app/ai/prompts/comment_generator/v1/system.md
+```
+
+should change comment-generation behavior without modifying:
+
+```text
+comment_generator.py
+claude_provider.py
+workflow_engine.py
+```
+
+---
+
+# 72. PROMPT DEVELOPMENT PRINCIPLE
+
+Treat prompts as application assets/configuration, not source-code strings.
+
+Therefore:
+
+```text
+BAD:
+
+post_evaluator.py
+    └── giant prompt string
+
+GOOD:
+
+post_evaluator.py
+    └── calls PromptManager
+
+PromptManager
+    └── loads post_evaluator/v1/system.md
+
+post_evaluator/v1/system.md
+    └── contains agent instructions
+```
+
+---
+
+# 73. UPDATE TO THE MAIN ARCHITECTURE
+
+The final architecture should now be:
+
+```text
+                         ┌─────────────────────┐
+                         │     React UI        │
+                         └──────────┬──────────┘
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │     FastAPI         │
+                         └──────────┬──────────┘
+                                    │
+                ┌───────────────────┼───────────────────┐
+                │                   │                   │
+                ▼                   ▼                   ▼
+        ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+        │ Workflow     │    │ AI Layer     │    │ Scheduler    │
+        │ Engine       │    │              │    │ Celery       │
+        └──────┬───────┘    └──────┬───────┘    └──────┬───────┘
+               │                   │                   │
+               │                   ▼                   │
+               │          ┌────────────────┐           │
+               │          │ Prompt Manager │           │
+               │          └───────┬────────┘           │
+               │                  │                    │
+               │                  ▼                    │
+               │          ┌────────────────┐           │
+               │          │ Prompt Files   │           │
+               │          │ .md / versions │           │
+               │          └───────┬────────┘           │
+               │                  │                    │
+               │                  ▼                    │
+               │          ┌────────────────┐           │
+               │          │ Claude API     │           │
+               │          └────────────────┘           │
+               │                                       │
+               └───────────────────┬───────────────────┘
+                                   │
+                    ┌──────────────┴──────────────┐
+                    │                             │
+                    ▼                             ▼
+             ┌──────────────┐             ┌──────────────┐
+             │ PostgreSQL   │             │ Platform     │
+             │              │             │ Adapter      │
+             └──────────────┘             └──────────────┘
+```
+
+---
+
+# 74. FINAL RULE FOR CLAUDE CODE
+
+Whenever implementing an AI agent:
+
+1. Create the agent class.
+2. Create its Pydantic input/output schemas.
+3. Create its dedicated prompt directory.
+4. Create versioned `.md` prompt files.
+5. Load prompts through `PromptManager`.
+6. Inject runtime variables safely.
+7. Call Claude through `ClaudeProvider`.
+8. Validate Claude's response.
+9. Persist the AI decision.
+10. Record prompt version and model.
+11. Return the validated result to the workflow engine.
+
+NEVER put the actual long-form agent prompt inside the agent Python class.
+
+This requirement applies to ALL current and future agents.
+
+# 75. LLM PROVIDER ABSTRACTION — CLAUDE + LOCAL GPU MODEL
+
+This application MUST support two interchangeable LLM execution modes from the beginning:
+
+1. Claude API
+2. Local/self-hosted open-weight model running on our own GPU
+
+The application will initially be developed and tested on a laptop using Claude.
+
+Later, the application will be deployed to a GPU machine and the LLM provider will be switched to the local model.
+
+The goal is:
+
+> Switching from Claude to the local GPU model must require configuration changes, NOT changes to the agent/workflow/business logic.
+
+---
+
+# 76. DO NOT COUPLE AGENTS TO CLAUDE
+
+Agents must NEVER directly import or call the Claude SDK.
+
+BAD:
+
+```python
+from anthropic import Anthropic
+
+client = Anthropic(...)
+
+response = client.messages.create(...)
+```
+
+inside:
+
+```text
+candidate_evaluator.py
+post_evaluator.py
+comment_generator.py
+connection_generator.py
+```
+
+Agents must interact only with the application's common LLM interface.
+
+Correct architecture:
+
+```text
+Agent
+  ↓
+LLMProvider Interface
+  ↓
+Provider Factory
+  ↓
+┌───────────────────────┐
+│                       │
+▼                       ▼
+ClaudeProvider     LocalLLMProvider
+│                       │
+▼                       ▼
+Claude API             Ollama
+                        │
+                        ▼
+                    GPU Model
+```
+
+---
+
+# 77. LLM PROVIDER INTERFACE
+
+Create a common interface.
+
+Example:
+
+```python
+from abc import ABC, abstractmethod
+
+
+class LLMProvider(ABC):
+
+    @abstractmethod
+    async def generate(
+        self,
+        system_prompt: str,
+        user_prompt: str,
+        response_schema=None,
+        **kwargs
+    ):
+        pass
+
+    @abstractmethod
+    async def generate_structured(
+        self,
+        system_prompt: str,
+        user_prompt: str,
+        response_schema,
+        **kwargs
+    ):
+        pass
+```
+
+The exact implementation may be adapted to the project.
+
+The important requirement is that agents depend on `LLMProvider`, not a specific model vendor.
+
+---
+
+# 78. PROVIDERS
+
+Implement at least:
+
+```text
+ClaudeProvider
+LocalLLMProvider
+```
+
+Recommended structure:
+
+```text
+backend/
+└── app/
+    └── ai/
+        ├── provider.py
+        │
+        ├── providers/
+        │   ├── claude_provider.py
+        │   └── local_provider.py
+        │
+        ├── provider_factory.py
+        │
+        ├── prompt_manager.py
+        │
+        ├── agents/
+        │   ├── campaign_parser.py
+        │   ├── candidate_evaluator.py
+        │   ├── post_evaluator.py
+        │   ├── comment_generator.py
+        │   └── connection_generator.py
+        │
+        ├── prompts/
+        │   ├── campaign_parser/
+        │   ├── candidate_evaluator/
+        │   ├── post_evaluator/
+        │   ├── comment_generator/
+        │   └── connection_generator/
+        │
+        └── schemas/
+```
+
+Adapt this structure to the existing repository if necessary.
+
+---
+
+# 79. CLAUDE PROVIDER
+
+Implement:
+
+```python
+class ClaudeProvider(LLMProvider):
+    ...
+```
+
+Configuration:
+
+```env
+LLM_PROVIDER=claude
+
+CLAUDE_API_KEY=
+CLAUDE_MODEL=
+```
+
+The Claude API key must remain server-side.
+
+Never expose it to React.
+
+---
+
+# 80. LOCAL LLM PROVIDER
+
+Implement:
+
+```python
+class LocalLLMProvider(LLMProvider):
+    ...
+```
+
+Initially support a local inference server such as Ollama.
+
+Configuration:
+
+```env
+LLM_PROVIDER=local
+
+LOCAL_LLM_BASE_URL=http://localhost:11434
+LOCAL_LLM_MODEL=
+```
+
+The exact local model must remain configurable.
+
+Do NOT hard-code a particular model such as Qwen, Llama, Mistral, etc.
+
+Example:
+
+```env
+LOCAL_LLM_MODEL=qwen3
+```
+
+Later we should be able to change it to another compatible model without modifying application code.
+
+---
+
+# 81. PROVIDER FACTORY
+
+Create a single provider factory.
+
+Example:
+
+```python
+def get_llm_provider() -> LLMProvider:
+
+    if settings.llm_provider == "claude":
+        return ClaudeProvider(
+            api_key=settings.claude_api_key,
+            model=settings.claude_model
+        )
+
+    if settings.llm_provider == "local":
+        return LocalLLMProvider(
+            base_url=settings.local_llm_base_url,
+            model=settings.local_llm_model
+        )
+
+    raise ValueError(
+        f"Unsupported LLM provider: {settings.llm_provider}"
+    )
+```
+
+The exact implementation is flexible.
+
+There must be ONE centralized location responsible for provider selection.
+
+---
+
+# 82. AGENTS MUST NOT CHECK THE PROVIDER
+
+Do NOT write:
+
+```python
+if settings.llm_provider == "claude":
+    ...
+else:
+    ...
+```
+
+inside agents.
+
+Do NOT write provider-specific logic inside:
+
+```text
+campaign_parser.py
+candidate_evaluator.py
+post_evaluator.py
+comment_generator.py
+connection_generator.py
+workflow_engine.py
+```
+
+Instead:
+
+```python
+provider = get_llm_provider()
+
+result = await provider.generate_structured(
+    system_prompt=system_prompt,
+    user_prompt=user_prompt,
+    response_schema=PostEvaluationSchema
+)
+```
+
+The agent should not know whether Claude or a local model generated the response.
+
+---
+
+# 83. STRUCTURED OUTPUT MUST WORK WITH BOTH PROVIDERS
+
+The application requires structured AI responses.
+
+For example:
+
+```json
+{
+  "eligible": true,
+  "relevanceScore": 91,
+  "topics": [
+    "Java",
+    "Microservices"
+  ],
+  "reason": "The post directly discusses...",
+  "riskFlags": []
+}
+```
+
+Both providers must return data that can be validated using Pydantic.
+
+Do NOT assume that a local model will always produce valid JSON.
+
+Implement:
+
+```text
+LLM Response
+      ↓
+Parse
+      ↓
+Validate with Pydantic
+      ↓
+Valid?
+   /     \
+ YES      NO
+  |        |
+Continue   Retry / Repair
+           |
+       Still invalid?
+           |
+          Fail
+```
+
+Never execute external actions based on unvalidated LLM output.
+
+---
+
+# 84. STRUCTURED OUTPUT FALLBACK
+
+Because local models may have different structured-output capabilities, implement a provider-neutral mechanism.
+
+Preferred order:
+
+```text
+1. Native structured output if supported
+2. JSON schema / constrained output if supported
+3. Strict JSON prompt
+4. Parse response
+5. Validate with Pydantic
+6. Retry once or twice if invalid
+7. Fail safely
+```
+
+The workflow engine must never assume that the model is reliable simply because Claude previously returned valid output.
+
+---
+
+# 85. PROMPTS REMAIN SEPARATE
+
+This requirement applies regardless of the provider.
+
+NEVER put large prompts inside Python source files.
+
+Prompts remain in:
+
+```text
+app/ai/prompts/
+```
+
+For example:
+
+```text
+prompts/
+├── campaign_parser/
+│   └── v1/
+│       ├── system.md
+│       └── user.md
+│
+├── candidate_evaluator/
+│   └── v1/
+│       ├── system.md
+│       └── user.md
+│
+├── post_evaluator/
+│   └── v1/
+│       ├── system.md
+│       └── user.md
+│
+├── comment_generator/
+│   └── v1/
+│       ├── system.md
+│       └── user.md
+│
+└── connection_generator/
+    └── v1/
+        ├── system.md
+        └── user.md
+```
+
+Prompt files must work with both Claude and the local model.
+
+---
+
+# 86. PROMPT MANAGER
+
+Create:
+
+```python
+PromptManager
+```
+
+Responsibilities:
+
+```text
+Load prompt
+Select version
+Inject variables
+Compose common rules
+Return final prompt
+```
+
+Example:
+
+```python
+system_prompt = prompt_manager.load_system_prompt(
+    agent_name="post_evaluator",
+    version="v1"
+)
+
+user_prompt = prompt_manager.load_user_prompt(
+    agent_name="post_evaluator",
+    version="v1",
+    variables={
+        "post_content": post.content,
+        "candidate": candidate,
+        "campaign": campaign
+    }
+)
+```
+
+The provider then receives the generated prompts.
+
+---
+
+# 87. AGENT → PROMPT → PROVIDER ARCHITECTURE
+
+Every AI operation must follow this flow:
+
+```text
+Agent
+  ↓
+PromptManager
+  ↓
+Versioned Prompt Files
+  ↓
+LLMProvider
+  ↓
+ClaudeProvider OR LocalLLMProvider
+  ↓
+LLM Response
+  ↓
+Pydantic Validation
+  ↓
+Agent Result
+  ↓
+Workflow Engine
+```
+
+Never bypass this architecture.
+
+---
+
+# 88. CONFIGURATION PRIORITY
+
+Implement configuration at multiple levels so the architecture is future-ready.
+
+Initially support:
+
+```text
+Global provider
+```
+
+Example:
+
+```env
+LLM_PROVIDER=claude
+```
+
+Later support:
+
+```text
+Campaign provider override
+Agent-specific provider override
+```
+
+Potential configuration:
+
+```yaml
+llm:
+  default_provider: claude
+
+agents:
+
+  campaign_parser:
+    provider: claude
+
+  candidate_evaluator:
+    provider: claude
+
+  post_evaluator:
+    provider: claude
+
+  comment_generator:
+    provider: claude
+
+  connection_generator:
+    provider: claude
+```
+
+For the initial version, the global provider setting is sufficient.
+
+Do not overcomplicate the UI unless needed.
+
+---
+
+# 89. MODEL CONFIGURATION
+
+Provider and model must be separate concepts.
+
+Example:
+
+```text
+Provider:
+claude
+
+Model:
+configured Claude model
+```
+
+or:
+
+```text
+Provider:
+local
+
+Model:
+configured local model
+```
+
+Do NOT hard-code model names into agent code.
+
+---
+
+# 90. FUTURE GPU DEPLOYMENT
+
+The application will initially run:
+
+```text
+Developer Laptop
+      ↓
+FastAPI
+      ↓
+Claude API
+```
+
+Configuration:
+
+```env
+LLM_PROVIDER=claude
+```
+
+Later it will run:
+
+```text
+GPU Server
+      ↓
+FastAPI
+      ↓
+LocalLLMProvider
+      ↓
+Ollama
+      ↓
+Open-weight model
+      ↓
+GPU
+```
+
+Configuration:
+
+```env
+LLM_PROVIDER=local
+```
+
+Changing this configuration must NOT require modifying:
+
+```text
+Agent code
+Workflow code
+Database code
+React code
+Campaign code
+Prompt files
+Scheduler code
+```
+
+---
+
+# 91. LOCAL MODEL MUST BE A DROP-IN REPLACEMENT
+
+The local model should implement the same provider contract as Claude.
+
+For example:
+
+```text
+ClaudeProvider.generate_structured()
+```
+
+and:
+
+```text
+LocalLLMProvider.generate_structured()
+```
+
+must expose the same interface.
+
+The caller should be able to use either provider without knowing which one is active.
+
+---
+
+# 92. PROVIDER CAPABILITIES
+
+Because local models may not have exactly the same capabilities as Claude, create a capability model.
+
+Example:
+
+```python
+class LLMCapabilities:
+
+    supports_structured_output: bool
+    supports_tool_calling: bool
+    supports_streaming: bool
+    supports_vision: bool
+    max_context_tokens: int
+```
+
+Each provider reports its capabilities.
+
+Example:
+
+```text
+ClaudeProvider
+    structured_output = YES
+    tool_calling = YES
+    streaming = YES
+
+LocalLLMProvider
+    structured_output = MODEL DEPENDENT
+    tool_calling = MODEL DEPENDENT
+    streaming = YES/NO
+```
+
+Do not assume every local model supports every feature.
+
+---
+
+# 93. SAFE CAPABILITY HANDLING
+
+If an agent requires a capability that the selected provider/model does not support:
+
+Do NOT silently fail.
+
+Return a clear application error:
+
+```text
+LLM_CAPABILITY_UNSUPPORTED
+```
+
+Example:
+
+```text
+The configured local model does not support the required
+structured-output capability for this agent.
+```
+
+Allow the configuration to be changed.
+
+---
+
+# 94. AI REQUEST/RESPONSE LOGGING
+
+For every AI execution, record:
+
+```text
+agent_name
+provider
+model
+prompt_version
+request_timestamp
+response_timestamp
+latency
+success/failure
+input token count if available
+output token count if available
+error code
+```
+
+Do NOT log sensitive credentials.
+
+Be careful about storing complete personal/private content unnecessarily.
+
+---
+
+# 95. AI COST TRACKING
+
+The system should support cost tracking.
+
+For Claude:
+
+```text
+input tokens
+output tokens
+estimated cost
+```
+
+For local:
+
+```text
+input tokens
+output tokens
+estimated cost = 0
+GPU execution time
+```
+
+The architecture should allow dashboard statistics such as:
+
+```text
+AI Requests Today
+Claude Requests
+Local Model Requests
+Claude Cost
+Local GPU Time
+Average AI Latency
+```
+
+---
+
+# 96. AI PROVIDER SETTINGS
+
+Settings page should eventually support:
+
+```text
+AI Provider
+
+( ) Claude
+( ) Local Model
+
+Claude Model:
+[................]
+
+Local Model:
+[................]
+
+Local LLM URL:
+[................]
+```
+
+However, environment/server configuration may remain authoritative in production.
+
+Do not expose API keys in the frontend.
+
+---
+
+# 97. TESTING BOTH PROVIDERS
+
+Create a mock provider:
+
+```python
+MockLLMProvider
+```
+
+This should be used for deterministic tests.
+
+Test:
+
+```text
+Campaign parsing
+Candidate evaluation
+Post evaluation
+Comment generation
+Connection generation
+Invalid JSON
+Malformed output
+Provider timeout
+Provider unavailable
+Rate limit
+Retry
+```
+
+Also create integration tests for:
+
+```text
+ClaudeProvider
+LocalLLMProvider
+```
+
+when their services are available.
+
+Tests should not require a live Claude API key by default.
+
+Tests should not require a GPU by default.
+
+---
+
+# 98. DEVELOPMENT ENVIRONMENTS
+
+Support at least:
+
+### Development
+
+```env
+LLM_PROVIDER=claude
+```
+
+### Local GPU
+
+```env
+LLM_PROVIDER=local
+```
+
+### Test
+
+```env
+LLM_PROVIDER=mock
+```
+
+This gives:
+
+```text
+Development → Claude
+GPU → Local
+Automated Tests → Mock
+```
+
+---
+
+# 99. DOCKER CONSIDERATIONS
+
+Do not assume the GPU exists in the initial Docker environment.
+
+The normal Docker Compose environment should work without a GPU.
+
+Later, create an optional GPU deployment configuration.
+
+For example:
+
+```text
+docker-compose.yml
+docker-compose.gpu.yml
+```
+
+The GPU configuration may include the local LLM service.
+
+Do not make GPU dependencies mandatory for the laptop development environment.
+
+---
+
+# 100. FINAL REQUIREMENT
+
+The AI architecture must be designed around this principle:
+
+> The application owns the agent logic. The provider owns model execution.
+
+Therefore:
+
+```text
+Agent Logic
+    ≠
+Claude
+
+Agent Logic
+    ≠
+Ollama
+
+Agent Logic
+    =
+Provider-independent business logic
+```
+
+The final implementation must allow:
+
+```text
+CLAUDE
+   ↓
+LOCAL GPU
+   ↓
+ANOTHER OPEN MODEL
+   ↓
+FUTURE LLM PROVIDER
+```
+
+without rewriting the application.
+
+The initial implementation must use:
+
+```env
+LLM_PROVIDER=claude
+```
+
+for laptop development.
+
+The architecture must already support:
+
+```env
+LLM_PROVIDER=local
+```
+
+for future GPU deployment.
+
+Do not postpone this abstraction until the GPU is available. Implement it from the beginning.

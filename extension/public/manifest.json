@@ -1,0 +1,52 @@
+{
+  "manifest_version": 3,
+  "name": "LinkedIn AI Networking Agent",
+  "description": "Connect your LinkedIn account, search jobs & candidates, and manage AI-powered networking.",
+  "version": "1.0.0",
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "LinkedIn AI Agent"
+  },
+  "background": {
+    "service_worker": "service_worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://localhost:5173/*",
+        "http://127.0.0.1:5173/*",
+        "http://localhost:3000/*",
+        "https://staging.divergentsl.com/*"
+      ],
+      "js": [
+        "content_auth_sync.js"
+      ],
+      "run_at": "document_end"
+    },
+    {
+      "matches": [
+        "https://*.linkedin.com/*"
+      ],
+      "js": [
+        "linkedin_content_script.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "activeTab",
+    "alarms",
+    "tabs",
+    "cookies",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://*.linkedin.com/*",
+    "http://localhost:8000/*",
+    "http://localhost:5173/*",
+    "http://127.0.0.1:5173/*",
+    "http://localhost:3000/*",
+    "https://staging.divergentsl.com/*"
+  ]
+}

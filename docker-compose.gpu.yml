@@ -1,0 +1,50 @@
+# Optional GPU overlay. The base compose file works without a GPU.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d
+#   docker compose exec ollama ollama pull qwen3
+#
+# Then set LLM_PROVIDER=local and LOCAL_LLM_MODEL=<model> in your .env.
+# No application code changes are required to switch.
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama-models:/root/.ollama
+    ports:
+      - "127.0.0.1:${OLLAMA_PORT:-11434}:11434"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+  backend:
+    environment:
+      LLM_PROVIDER: local
+      LOCAL_LLM_BASE_URL: http://ollama:11434
+      LOCAL_LLM_MODEL: ${LOCAL_LLM_MODEL:?set LOCAL_LLM_MODEL to the model you pulled}
+    depends_on:
+      ollama:
+        condition: service_started
+
+  worker:
+    environment:
+      LLM_PROVIDER: local
+      LOCAL_LLM_BASE_URL: http://ollama:11434
+      LOCAL_LLM_MODEL: ${LOCAL_LLM_MODEL:?set LOCAL_LLM_MODEL to the model you pulled}
+    depends_on:
+      ollama:
+        condition: service_started
+
+volumes:
+  ollama-models:
